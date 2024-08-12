@@ -15,7 +15,8 @@ from openood.postprocessors import (
     VIMPostprocessor, RotPredPostprocessor, RankFeatPostprocessor,
     RMDSPostprocessor, SHEPostprocessor, CIDERPostprocessor, NPOSPostprocessor,
     GENPostprocessor, NNGuidePostprocessor, RelationPostprocessor,
-    T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor)
+    T2FNormPostprocessor, ReweightOODPostprocessor, fDBDPostprocessor,
+    InkPostprocessor)
 from openood.utils.config import Config, merge_configs
 
 postprocessors = {
@@ -63,7 +64,8 @@ postprocessors = {
     'nnguide': NNGuidePostprocessor,
     'relation': RelationPostprocessor,
     't2fnorm': T2FNormPostprocessor,
-    'reweightood': ReweightOODPostprocessor
+    'reweightood': ReweightOODPostprocessor,
+    'ink': InkPostprocessor
 }
 
 link_prefix = 'https://raw.githubusercontent.com/Jingkang50/OpenOOD/main/configs/postprocessors/'
@@ -78,11 +80,10 @@ def get_postprocessor(config_root: str, postprocessor_name: str,
         urllib.request.urlretrieve(link_prefix + f'{postprocessor_name}.yml',
                                    postprocessor_config_path)
 
-    config = Config(postprocessor_config_path)
-    config = merge_configs(config,
-                           Config(**{'dataset': {
-                               'name': id_data_name
-                           }}))
+    postprocessor_config = Config(postprocessor_config_path)
+    id_data_config_path = os.path.join(config_root, 'datasets', id_data_name, f'{id_data_name}.yml')
+    id_data_config = Config(id_data_config_path)
+    config = merge_configs(postprocessor_config, id_data_config)
     postprocessor = postprocessors[postprocessor_name](config)
     postprocessor.APS_mode = config.postprocessor.APS_mode
     postprocessor.hyperparam_search_done = False

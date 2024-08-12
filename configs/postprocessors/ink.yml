@@ -1,0 +1,7 @@
+ostprocessor:
+  name: ink
+  APS_mode: False
+  postprocessor_args:
+    temperature: 0.05
+  postprocessor_sweep:
+    temperature_list: [0.01, 0.05]
