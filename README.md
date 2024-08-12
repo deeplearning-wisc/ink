@@ -1,3 +1,7 @@
+This repository is forked from [OpenOOD](https://github.com/Jingkang50/OpenOOD). We support our intrinsic energy score by adding it as a postprocessor to the original codebase.
+
+---
+
 # OpenOOD: Benchmarking Generalized OOD Detection
 
 <!--
